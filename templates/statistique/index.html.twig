@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Include additional CSS here if needed -->
+{% endblock %}
+
+{% block body %}
+    <h1>Product Stock Statistics</h1>
+    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+        <canvas id="stockChart"></canvas>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('stockChart').getContext('2d');
+        var stockChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ categoriesData|map(v => v.nom)|json_encode|raw }},
+                datasets: [{
+                    label: 'Stock Quantity',
+                    data: {{ categoriesData|map(v => v.productCount)|json_encode|raw }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                    {
+                        label: 'Another Metric',
+                        data: [30, 45, 70, 20, 60, 75], // Example data
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                animation: {
+                    duration: 1500, // general animation time
+                },
+                hover: {
+                    animationDuration: 300, // duration of animations when hovering an item
+                },
+                responsiveAnimationDuration: 500, // animation duration after a resize
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += Math.round(tooltipItem.raw);
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

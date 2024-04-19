@@ -1,0 +1,224 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0077b6;
+            --secondary-color: #90e0ef;
+            --accent-color: #00b4d8;
+            --background-color: #e0f2fe; /* Light blue background */
+            --font-primary: 'Poppins', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: var(--font-primary);
+            background: var(--background-color); /* Updated background color */
+            color: #333;
+            font-size: 16px;
+        }
+
+        .product-listing .container {
+            max-width: 1280px;
+            margin: 4rem auto;
+            padding: 3rem;
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card {
+            background-color: #ffffff;
+            border: 1px solid #eeeeee;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card img {
+            width: 80%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary, .btn-edit {
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            padding: 0.75rem 2rem;
+            color: #fff;
+            background-color: var(--primary-color);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover, .btn-edit:hover {
+            background-color: var(--accent-color);
+            border-color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .product-listing .container {
+                padding: 2rem;
+            }
+        }
+
+        .categories-list {
+            padding: 20px;
+        }
+
+        .product-card img {
+            width: 100%; /* Make images responsive within their containers */
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            background-image: linear-gradient(145deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-size: 0.875rem;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn:hover, .btn:focus {
+            background-image: linear-gradient(145deg, var(--accent-color) 0%, var(--primary-color) 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-edit {
+            background-color: var(--secondary-color);
+            color: #333;
+        }
+
+        .btn-delete {
+            background-color: #ff6868;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #ff5c5c;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            background-image: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            color: transparent;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.25)); /* Add shadow to the title for better visibility */
+        }
+
+        /* Adjusted button positioning */
+        .add-product-button {
+            display: block;
+            width: max-content;
+            margin: 2rem auto 3rem; /* Centers the button and gives space above and below */
+        }
+
+        /* Styles pour la pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .pagination a {
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 16px;
+            transition: background-color .3s, color .3s;
+            border-radius: 5px;
+            margin: 0 4px;
+        }
+
+        .pagination a:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .pagination .current {
+            background-color: var(--primary-color);
+            color: white;
+            pointer-events: none;
+        }
+
+        .pagination .disabled {
+            color: #ccc;
+            pointer-events: none;
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <a href="{{ path('add_produit') }}" class="btn btn-primary add-product-button">Add Product</a>
+        <h1>List of Products</h1>
+        <div class="row">
+            {% for produit in produits %}
+                <div class="col-md-4 mb-4">
+                    <div class="product-card">
+                        <img src="{{ asset('uploads/brochures/' ~ produit.brochureFilename) }}"
+                             alt="Image of {{ produit.nom }}">
+                        <h2>{{ produit.nom }}</h2>
+                        <p>Size: {{ produit.taille }}</p>
+                        <p>Price: {{ produit.prix }} €</p>
+                        <p>Category: {{ produit.categorie ? produit.categorie.nom : 'No category assigned' }}</p>
+                        {% if quantitiesByCategory[produit.categorie.id] is defined %}
+                            <p>Quantity in this category: {{ quantitiesByCategory[produit.categorie.id] }}</p>
+                        {% else %}
+                            <p>Quantity in this category: 0</p>
+                        {% endif %}
+                        <a href="{{ path('edit_produit', {'id': produit.id}) }}" class="btn btn-edit">Edit</a>
+                        <a href="{{ path('delete_produit', {'id': produit.id}) }}" class="btn btn-delete">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="pagination">
+        {{ knp_pagination_render(produits) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
