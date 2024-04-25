@@ -30,6 +30,7 @@
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.52",
+        "symfony/stopwatch": "6.3.*",
         "symfony/web-profiler-bundle": "6.3.*"
     },
     "config": {

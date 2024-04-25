@@ -1,41 +1,131 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}🔑Log in!{% endblock %}
+{% block title %}🔑 Log in!{% endblock %}
 
 {% block body %}
+    <div class="login-container">
+        <div class="login-content">
+
+            <form method="post" class="form-signin">
+                <h2 class="form-signin-heading">Please sign in</h2>
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                       autocomplete="email" required autofocus>
+
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control"
+                       autocomplete="current-password" required>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="remember_me"> Remember me
+                    </label>
+                </div>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <a href="{{ path('app_register') }}" class="btn btn-lg btn-secondary btn-block">Register</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
     <style>
         body {
-            /* Specify the URL of your background image */
-            background-image: url('/images/loginn.png');
-            /* Set background properties */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('/images/DALL·E-2024-04-25-17.43.png') no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .login-content {
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-signin-heading {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 2px solid #ced4da;
+            border-radius: 4px;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            margin-bottom: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #7abaff;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(58, 133, 255, .6);
+        }
+
+        .checkbox label {
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn {
+            font-size: 1rem;
+            border-radius: 4px;
+            padding: 10px 15px;
+            width: 100%;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: all .2s ease-in-out;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .alert {
+            text-align: center;
+            margin-bottom: 1rem;
         }
     </style>
-    {# Display the message from the service #}
-    {% if message %}
-        <div class="alert alert-info">{{ message }}</div>
-    {% endif %}
-<form method="post">
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}">
-
-    <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
-
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
-
-</form>
 {% endblock %}
+
+
+

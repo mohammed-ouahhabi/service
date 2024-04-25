@@ -25,15 +25,20 @@ class Produits
     private ?string $Taille = null;
 
     #[ORM\Column(type: 'string')]
-    private string $brochureFilename;
+    private ?string $brochureFilename = '';
 
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: "produits")]
     #[ORM\JoinColumn(name: "categorie_id", referencedColumnName: "id", nullable: true)]
     private $categorie;
 
+    public function __construct()
+    {
+        $this->brochureFilename = ''; // Default value is an empty string
+    }
+
     public function getBrochureFilename(): string
     {
-        return $this->brochureFilename;
+        return $this->brochureFilename ?? '';
     }
 
     public function setBrochureFilename(string $brochureFilename): self
@@ -42,7 +47,6 @@ class Produits
 
         return $this;
     }
-
 
     public function getId(): ?int
     {
@@ -78,7 +82,7 @@ class Produits
         return $this->Taille;
     }
 
-    public function setTaille(string $Taille): self
+    public function setTaille(?string $Taille): self
     {
         $this->Taille = $Taille;
 
@@ -96,7 +100,6 @@ class Produits
         $this->categorie = $categorie;
         return $this;
     }
-
 
 
 }

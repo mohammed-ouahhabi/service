@@ -1,4 +1,5 @@
 # This is an example of what should typically be in a routing file.
 main:
     resource: '../src/Controller/'
-    type: annotation
+    type: attribute
+

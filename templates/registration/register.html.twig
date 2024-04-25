@@ -1,23 +1,103 @@
-{% extends 'base.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
+{% block stylesheets %}
+
+    <style>
+        body {
+            background: #f9f9f9; /* Light background for the page */
+            font-family: 'Arial', sans-serif; /* Ensures font consistency */
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        .btn {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .alert {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            position: relative;
+            padding: .75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <div class="container">
+        <div class="form-container">
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
 
-    <h1>Register</h1>
+            <h1>Register</h1>
 
-    {{ form_errors(registrationForm) }}
+            {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_start(registrationForm, {'attr': {'class': 'form'}}) }}
+            {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_row(registrationForm.firstname, {'attr': {'class': 'form-control'}}) }}
+            {{ form_row(registrationForm.lastname, {'attr': {'class': 'form-control'}}) }}
+            {{ form_row(registrationForm.plainPassword, {
+                'label': 'Password',
+                'attr': {'class': 'form-control'}
+            }) }}
+            {{ form_row(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            <button type="submit" class="btn">Register</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
 {% endblock %}

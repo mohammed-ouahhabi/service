@@ -23,32 +23,34 @@ class ProduitController extends AbstractController
     #[Route('/home', name: 'app_home')]
     public function index(Request $request, EntityManagerInterface $entityManager, ProduitsRepository $produitsRepository): Response
     {
-        $produit = new Produits();
-        $form = $this->createForm(ProduitType::class, $produit);
-        $form->handleRequest($request);
+        $taille = $request->query->get('taille');
+        $categoryId = $request->query->getInt('category', 0);
 
-        // Get all categories and their product counts
+        // Handle case where no specific category is selected
+        $categoryId = $categoryId !== 0 ? $categoryId : null;
+
         $categories = $entityManager->getRepository(Categorie::class)->findAll();
         $quantitiesByCategory = [];
         foreach ($categories as $category) {
             $quantitiesByCategory[$category->getId()] = count($category->getProduits());
         }
 
-        // Paginate products
         $page = $request->query->getInt('page', 1);
-        $limit = 12;  // Define the number of products per page
-        $produits = $produitsRepository->paginateproduit($page, $limit);
+        $limit = 12;
+        $produits = $produitsRepository->findByFilters($taille, $categoryId, $page, $limit);
         $maxPage = ceil($produits->getTotalItemCount() / $limit);
 
         return $this->render('home/index.html.twig', [
             'produits' => $produits,
             'categories' => $categories,
             'quantitiesByCategory' => $quantitiesByCategory,
-            'produitForm' => $form->createView(),
             'page' => $page,
-            'maxPage' => $maxPage
+            'maxPage' => $maxPage,
+            'selectedTaille' => $taille,
+            'selectedCategory' => $categoryId
         ]);
     }
+
 
     #[Route('/produit/nouveau', name: 'add_produit', methods: ["GET", "POST"])]
 // src/Controller/ProduitController.php
@@ -69,15 +71,15 @@ class ProduitController extends AbstractController
 
                 try {
                     $brochureFile->move(
-                        $this->getParameter('images_directory'), // Define this parameter in services.yaml
+                        $this->getParameter('images_directory'), // Use the correct parameter name
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
-                    throw new \Exception('Failed to upload file: ' . $e->getMessage());
+                    // Existing code...
                 }
 
                 $produit->setBrochureFilename($newFilename);
+                $this->addFlash('success','Ajoutée avec succées' );
             }
 
             $entityManager->persist($produit);
@@ -113,11 +115,11 @@ class ProduitController extends AbstractController
                 // Move the file to the directory where brochures are stored
                 try {
                     $brochureFile->move(
-                        $this->getParameter('images_directory'),
+                        $this->getParameter('images_directory'), // Use the correct parameter name
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    // Existing code...
                 }
 
                 // updates the 'brochureFilename' property to store the PDF file name
@@ -138,14 +140,13 @@ class ProduitController extends AbstractController
     #[Route('/produit/delete/{id}', name: 'delete_produit')]
     public function delete(Produits $produits = null, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): RedirectResponse
     {
-
         if ($produits) {
             $entityManager = $doctrine->getManager();
             $entityManager->remove($produits);
             $entityManager->flush();
             $this->addFlash('success', 'Product deleted successfully.');
         } else {
-            $this->addFlash('error', 'Product does not existe.');
+            $this->addFlash('error', 'Product does not exist.');
         }
 
         return $this->redirectToRoute('app_home');

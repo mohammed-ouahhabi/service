@@ -8,7 +8,7 @@
             --primary-color: #0077b6;
             --secondary-color: #90e0ef;
             --accent-color: #00b4d8;
-            --background-color: #e0f2fe; /* Light blue background */
+            --background-color: #e0f2fe;
             --font-primary: 'Poppins', sans-serif;
         }
 
@@ -16,18 +16,63 @@
             height: 100%;
             margin: 0;
             font-family: var(--font-primary);
-            background: var(--background-color); /* Updated background color */
+            background: var(--background-color);
             color: #333;
             font-size: 16px;
         }
 
-        .product-listing .container {
+        .container {
             max-width: 1280px;
-            margin: 4rem auto;
-            padding: 3rem;
+            margin: auto;
+            padding: 2rem;
             background: #fff;
             border-radius: 25px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--secondary-color);
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        select {
+            padding: 0.5rem;
+            border-radius: 10px;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-filter {
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            border: none;
+            color: #fff;
+            background-image: linear-gradient(145deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            transition: background-image 0.3s ease;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-filter:hover {
+            background-image: linear-gradient(145deg, var(--accent-color) 0%, var(--primary-color) 100%);
         }
 
         .product-card {
@@ -36,7 +81,7 @@
             border-radius: 20px;
             padding: 25px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -49,109 +94,11 @@
         }
 
         .product-card img {
-            width: 80%;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn-primary, .btn-edit {
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: bold;
-            padding: 0.75rem 2rem;
-            color: #fff;
-            background-color: var(--primary-color);
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .btn-primary:hover, .btn-edit:hover {
-            background-color: var(--accent-color);
-            border-color: var(--primary-color);
-        }
-
-        @media (max-width: 768px) {
-            .product-listing .container {
-                padding: 2rem;
-            }
-        }
-
-        .categories-list {
-            padding: 20px;
-        }
-
-        .product-card img {
-            width: 100%; /* Make images responsive within their containers */
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            display: inline-block;
-            text-decoration: none;
-            text-align: center;
-            cursor: pointer;
-            background-image: linear-gradient(145deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 0.75rem 2rem;
-            font-size: 0.875rem;
-            font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-            transition: all 0.3s ease;
-            margin: 0.5rem;
-        }
-
-        .btn:hover, .btn:focus {
-            background-image: linear-gradient(145deg, var(--accent-color) 0%, var(--primary-color) 100%);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-edit {
-            background-color: var(--secondary-color);
-            color: #333;
-        }
-
-        .btn-delete {
-            background-color: #ff6868;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background-color: #ff5c5c;
-        }
-
-        .product-card img {
             width: 100%;
-            height: auto;
             border-radius: 15px;
             margin-bottom: 20px;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 3rem;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-            background-image: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            color: transparent;
-            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.25)); /* Add shadow to the title for better visibility */
-        }
-
-        /* Adjusted button positioning */
-        .add-product-button {
-            display: block;
-            width: max-content;
-            margin: 2rem auto 3rem; /* Centers the button and gives space above and below */
-        }
-
-        /* Styles pour la pagination */
         .pagination {
             display: flex;
             justify-content: center;
@@ -178,11 +125,70 @@
             color: white;
             pointer-events: none;
         }
-
-        .pagination .disabled {
-            color: #ccc;
-            pointer-events: none;
+        .btn-filter {
+            /* Existing styles */
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
+
+        .btn-filter:hover {
+            transform: translateY(-2px); /* Move button up slightly on hover */
+        }
+        .product-card {
+            /* Existing styles */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: scale(1.03); /* Enlarge the product card on hover */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+        }
+
+        .btn-edit, .btn-delete {
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            margin: 5px; /* Space between buttons */
+            border-radius: 4px; /* Rounded corners for buttons */
+            text-transform: uppercase; /* Optional: makes the button text uppercase */
+            font-weight: bold; /* Makes the text bold */
+        }
+
+        .btn-edit {
+            background-color: var(--primary-color);
+        }
+
+        .btn-edit:hover {
+            background-color: darken(var(--primary-color), 10%);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect for depth */
+            transform: translateY(-2px); /* Slight lift when hovered */
+        }
+
+        .btn-delete {
+            background-color: var(--danger-color);
+        }
+
+        .btn-delete:hover {
+            background-color: darken(var(--danger-color), 10%);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect for depth */
+            transform: translateY(-2px); /* Slight lift when hovered */
+        }
+        .add-product-button, .btn-filter {
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            border: none;
+            color: #fff;
+            background-image: linear-gradient(145deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            transition: background-image 0.3s ease, transform 0.2s ease; /* Added transition for transform */
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-product-button:hover, .btn-filter:hover {
+            background-image: linear-gradient(145deg, var(--accent-color) 0%, var(--primary-color) 100%);
+            transform: translateY(-2px); /* Move button up slightly on hover */
+        }
+
 
 
     </style>
@@ -190,6 +196,33 @@
 
 {% block body %}
     <div class="container">
+        <div class="filter-container">
+            <form action="{{ path('app_home') }}" method="get" class="grid">
+                <div class="filter-group">
+                    <label for="sizeFilter">Filter by Size:</label>
+                    <select name="taille" id="sizeFilter" class="form-control">
+                    {#  app.get.query app.request.query.get('taille')  #}
+                        <option value="">All Sizes</option>
+                        <option value="S" {% if selectedTaille == 'S' %} selected {% endif %}>S</option>
+                        <option value="M" {% if selectedTaille == 'M' %} selected {% endif %}>M</option>
+                        <option value="L" {% if selectedTaille == 'L' %} selected {% endif %}>L</option>
+                        <option value="XL" {% if selectedTaille == 'XL' %} selected {% endif %}>XL</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="categoryFilter">Filter by Category:</label>
+                    <select name="category" id="categoryFilter" class="form-control">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if selectedCategory == category.id %} selected {% endif %}>
+                                {{ category.nom }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-filter">Filter</button>
+            </form>
+        </div>
         <a href="{{ path('add_produit') }}" class="btn btn-primary add-product-button">Add Product</a>
         <h1>List of Products</h1>
         <div class="row">
@@ -202,10 +235,14 @@
                         <p>Size: {{ produit.taille }}</p>
                         <p>Price: {{ produit.prix }} €</p>
                         <p>Category: {{ produit.categorie ? produit.categorie.nom : 'No category assigned' }}</p>
-                        {% if quantitiesByCategory[produit.categorie.id] is defined %}
-                            <p>Quantity in this category: {{ quantitiesByCategory[produit.categorie.id] }}</p>
+                        {% if produit.categorie %}
+                            {% if quantitiesByCategory[produit.categorie.id] is defined %}
+                                <p>Quantity in this category: {{ quantitiesByCategory[produit.categorie.id] }}</p>
+                            {% else %}
+                                <p>Quantity in this category: 0</p>
+                            {% endif %}
                         {% else %}
-                            <p>Quantity in this category: 0</p>
+                            <p>No category assigned</p>
                         {% endif %}
                         <a href="{{ path('edit_produit', {'id': produit.id}) }}" class="btn btn-edit">Edit</a>
                         <a href="{{ path('delete_produit', {'id': produit.id}) }}" class="btn btn-delete">Delete</a>
@@ -220,5 +257,4 @@
 {% endblock %}
 
 {% block javascripts %}
-
 {% endblock %}

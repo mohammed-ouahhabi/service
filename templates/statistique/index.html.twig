@@ -11,59 +11,58 @@
         <canvas id="stockChart"></canvas>
     </div>
 {% endblock %}
-
 {% block javascripts %}
-    {{ parent() }}
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('stockChart').getContext('2d');
+        var originalData = {{ categoriesData|map(v => v.productCount)|json_encode|raw }};
+        var categoryNames = {{ categoriesData|map(v => v.nom)|json_encode|raw }};
+
+        // Generate a color for each product
+        var backgroundColors = [];
+        var borderColors = [];
+        for (let i = 0; i < originalData.length; i++) {
+            // Generate random color
+            var randomColor = 'rgba(' + Math.floor(Math.random() * 255) + ', ' +
+                Math.floor(Math.random() * 255) + ', ' +
+                Math.floor(Math.random() * 255) + ', 0.2)';
+            backgroundColors.push(randomColor);
+            // Generate a slightly darker border color
+            var borderColor = randomColor.replace('0.2', '1');
+            borderColors.push(borderColor);
+        }
+
         var stockChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: {{ categoriesData|map(v => v.nom)|json_encode|raw }},
+                labels: categoryNames,
                 datasets: [{
                     label: 'Stock Quantity',
-                    data: {{ categoriesData|map(v => v.productCount)|json_encode|raw }},
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    data: originalData,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
                     borderWidth: 1
-                },
-                    {
-                        label: 'Another Metric',
-                        data: [30, 45, 70, 20, 60, 75], // Example data
-                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        borderWidth: 1
-                    }]
+                }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return value;
+                            }
+                        }
                     }
                 },
-                animation: {
-                    duration: 1500, // general animation time
-                },
-                hover: {
-                    animationDuration: 300, // duration of animations when hovering an item
-                },
-                responsiveAnimationDuration: 500, // animation duration after a resize
                 plugins: {
                     tooltip: {
-                        mode: 'index',
-                        intersect: false,
                         callbacks: {
-                            label: function(tooltipItem, data) {
-                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                label += Math.round(tooltipItem.raw);
-                                return label;
+                            label: function (tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw;
                             }
                         }
                     }

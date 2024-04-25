@@ -1,42 +1,44 @@
 <?php
-
 namespace App\Repository;
 
 use App\Entity\Produits;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
-
-/**
- * @extends ServiceEntityRepository<Produits>
- *
- * @method Produits|null find($id, $lockMode = null, $lockVersion = null)
- * @method Produits|null findOneBy(array $criteria, array $orderBy = null)
- * @method Produits[]    findAll()
- * @method Produits[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class ProduitsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator)
+    private PaginatorInterface $paginator;
+
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Produits::class);
+        $this->paginator = $paginator;
     }
 
-    public function paginateproduit(int $page, int $limit): PaginationInterface
+    public function findByFilters(?string $taille, ?int $category, int $page, int $limit): PaginationInterface
     {
-        // Create a QueryBuilder instance using alias 'p' for Produits
-        $query = $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'ASC'); // Assuming you want to order by the 'id' field
+        $query = $this->createQueryBuilder('p');
 
-        // Use the $query object directly in the paginate method
-        return $this->paginator->paginate(
-            $query,  // This should be the QueryBuilder instance you just created
-            $page,
-            $limit
-        );
+        if ($taille) {
+            $query->andWhere('p.Taille = :taille')
+                ->setParameter('taille', $taille);
+        }
+
+        if ($category) {
+            $query->join('p.categorie', 'c')
+                ->andWhere('c.id = :category')
+                ->setParameter('category', $category);
+        }
+
+        $query->orderBy('p.id', 'ASC');
+
+        return $this->paginator->paginate($query, $page, $limit);
     }
+
+
 
 //     * @return Produits[] Returns an array of Produits objects
 //     */
