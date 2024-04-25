@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('/user')]
+#[Route('/admin')]
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
@@ -36,7 +36,6 @@ class UserController extends AbstractController
                 $user,
                 $form->get('plainPassword')->getData()
             );
-            $user->setPassword($hashedPassword);
             $user->setPassword($hashedPassword);
             $entityManager->persist($user);
             $entityManager->flush();

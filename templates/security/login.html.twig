@@ -12,14 +12,14 @@
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
 
-                <label for="inputEmail" class="sr-only">Email address</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
-                       autocomplete="email" required autofocus>
-
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control"
-                       autocomplete="current-password" required>
-
+                <div class="input-group">
+                    <span class="fa fa-user input-icon"></span>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                </div>
+                <div class="input-group">
+                    <span class="fa fa-lock input-icon"></span>
+                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 <div class="checkbox mb-3">
@@ -29,14 +29,34 @@
                 </div>
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                <a href="{{ path('app_register') }}" class="btn btn-lg btn-secondary btn-block">Register</a>
+
             </form>
         </div>
     </div>
 {% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <style>
+        .input-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #495057;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            padding-left: 2.5rem; /* Make room for the icon */
+            /* Rest of your styles ... */
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: url('/images/DALL·E-2024-04-25-17.43.png') no-repeat center center fixed;

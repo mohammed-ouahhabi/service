@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-
+#[Route('/user')]
 class ProduitController extends AbstractController
 {
     #[Route('/home', name: 'app_home')]
