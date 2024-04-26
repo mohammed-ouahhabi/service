@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produits;
 use App\Entity\Categorie;
+use App\Entity\User;
 use App\Form\ProduitType;
 use App\Repository\ProduitsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +54,6 @@ class ProduitController extends AbstractController
 
 
     #[Route('/produit/nouveau', name: 'add_produit', methods: ["GET", "POST"])]
-// src/Controller/ProduitController.php
     public function nouveau(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $produit = new Produits();
@@ -92,7 +92,6 @@ class ProduitController extends AbstractController
             'produitForm' => $form->createView(),
         ]);
     }
-
 
     #[Route('/produit/edit/{id}', name: 'edit_produit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produits $produit, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
@@ -153,4 +152,11 @@ class ProduitController extends AbstractController
     }
 
 
+    #[Route('/product/{id}', name: 'app_show', methods: ['GET'])]
+    public function show(Produits $produits): Response
+    {
+        return $this->render('home/show.html.twig', [
+            'produits' => $produits,
+        ]);
+    }
 }

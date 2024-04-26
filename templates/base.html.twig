@@ -280,6 +280,9 @@
                            href="{{ path('app_home') }}">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link " href="{{ path('cart_index') }}">Mon panier</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ app.request.attributes.get('_route') == 'app_statistique' ? 'active' : '' }}"
                            href="{{ path('app_statistique') }}">Statistique</a>
                     </li>

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <main class="container">
+        <section class="row">
+            <div class="col-12">
+                <h1>Panier</h1>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Taille</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.produit.getNom }}</td>
+                            <td>{{ item.produit.getPrix }}$</td>
+                            <td>{{ item.produit.getTaille }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.quantity * item.produit.getPrix }}</td>
+                            <td>
+                                <a href="{{ path('cart_add_cart', {id: item.produit.id}) }}" class="btn btn-info">+</a>
+                                <a href="{{ path('cart_remove', {id: item.produit.id}) }}" class="btn btn-warning">-</a>
+                                <a href="{{ path('cart_delete', {id: item.produit.id}) }}" class="btn btn-warning">Delete</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Votre panier est vide.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td>{{ total }}$</td>
+                        <td>
+                            <a href="{{  path('cart_empty') }}" class="btn btn-danger">Vider</a>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+    </main>
+{% endblock %}
